@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build ./DefaultMvcCore8 --file Dockerfile --tag mvccore8sampleproj:$(date +%s)
+      run: docker build ./DefaultMvcCore8 --tag mvccore8sampleproj:$(date +%s)
