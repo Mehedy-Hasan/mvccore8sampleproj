@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "nB9s9y1Lyjj4FEbXFcJ8leYLn7/MVNN6yjUX4wRHVjGafpgY1BvcA4G3cPuvS2u1ilP3jPHJ+ZmAM7AccTGWmA==",
+  "success": true,
+  "projectFilePath": "D:\\2 RND\\Microservice Project\\DefaultMVCCore\\DefaultMvcCore8\\DefaultMvcCore8\\DefaultMvcCore8.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Mehedy\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.6\\microsoft.visualstudio.azure.containers.tools.targets.1.19.6.nupkg.sha512"
+  ],
+  "logs": []
+}

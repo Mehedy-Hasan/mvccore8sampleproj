@@ -1,0 +1,42 @@
+default:
+  image: docker
+  services:
+    - docker:dind
+
+stages:
+  - stage_build_push
+
+variables:
+  COMMIT_SHA: "$CI_COMMIT_SHORT_SHA"
+  REPOSITORY_NAME: mvcdemo8
+  HARBOR_URL: 'https://m2s-registry.osl.team'
+  HARBOR_TAG_HOST: 'm2s-registry.osl.team'
+  HARBOR_PROJECT: mvc-demo-aspnet8
+
+job_build_push:
+  stage: stage_build_push
+  script:
+    - echo "CI_COMMIT_SHA's value is ${COMMIT_SHA}"
+    # For dockerhub push
+    #- docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} ${HARBOR_URL}
+    #- docker build -t ${DOCKER_USERNAME}/${REPOSITORY_NAME}:${COMMIT_SHA} -f ./DefaultMvcCore8/Dockerfile ./DefaultMvcCore8
+    #- docker push ${DOCKER_USERNAME}/${REPOSITORY_NAME}:${COMMIT_SHA}
+    
+    # For harbor push
+    - docker login -u ${HARBOR_USERNAME} -p ${HARBOR_PASSWORD} ${HARBOR_URL}
+    - docker build -t ${REPOSITORY_NAME}:${COMMIT_SHA} -f ./DefaultMvcCore8/Dockerfile ./DefaultMvcCore8
+    - docker tag ${REPOSITORY_NAME}:${COMMIT_SHA} ${HARBOR_TAG_HOST}/${HARBOR_PROJECT}/${REPOSITORY_NAME}:${COMMIT_SHA}
+    - docker push ${HARBOR_TAG_HOST}/${HARBOR_PROJECT}/${REPOSITORY_NAME}:${COMMIT_SHA}
+    
+    # For automatic manifest update
+    - git config --global user.email ${GLB_Email}
+    - git clone https://${GLB_User}:${GLB_ACCESS_TOKEN}@gitlab-exp.osl.team/devops/mvccore8sample-k8s.git
+    - cd mvccore8sample-k8s/manifest
+    - sed -i "s/m2s-registry.osl.team\/mvc-demo-aspnet8\/mvcdemo8:.*/m2s-registry.osl.team\/mvc-demo-aspnet8\/mvcdemo8:${COMMIT_SHA}/g" deployment.yml
+    - git add .
+    - git commit -m "version ${CI_COMMIT_TAG} released"
+    - git push
+
+  tags:
+    - devops-docker-linux
+
