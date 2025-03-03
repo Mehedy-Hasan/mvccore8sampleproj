@@ -21,9 +21,9 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build the Docker image
-      run: docker build ./DefaultMvcCore8 --tag mvccore8sampleproj:$(date +%s)
+      run: docker build ./DefaultMvcCore8 --tag mvccore8sampleproj:${{ github.sha }}
 
     - name: Push the Docker image to Docker Hub
       run: |
-        docker tag mvccore8sampleproj:$(date +%s) ${{ secrets.DOCKER_USERNAME }}/mvccore8sampleproj:$(date +%s)
-        docker push ${{ secrets.DOCKER_USERNAME }}/mvccore8sampleproj:$(date +%s)
+        docker tag mvccore8sampleproj:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/mvccore8sampleproj:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/mvccore8sampleproj:${{ github.sha }}
