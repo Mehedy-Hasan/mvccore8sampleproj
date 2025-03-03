@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: DefaultMvcCore8-deployment
+  namespace: DefaultMvcCore8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: DefaultMvcCore8-api
+  template:
+    metadata:
+      labels:
+        app: DefaultMvcCore8-api
+    spec:
+      containers:
+        - name: DefaultMvcCore8
+          image: docker.io/codewithmehedy/mvccore8sampleproj:
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          # volumeMounts:
+            # - name: DefaultMvcCore8-config-volume
+              # mountPath: /app/appsettings.json
+              # subPath: appsettings.json
+          env:
+            - name: TZ
+              value: "Asia/Dhaka"  # Set timezone to GMT+6 (Bangladesh Standard Time)
+      # volumes:
+        # - name: DefaultMvcCore8-config-volume
+          # configMap:
+            # name: DefaultMvcCore8-configmap
+
+      imagePullSecrets:
+        - name: docker-registry-secret

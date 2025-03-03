@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: DefaultMvcCore8-configmap
+  namespace: private-community
+data:
+  appsettings.json: |
+    {
+      "Version": "1.0",
+      "ConnectionStrings": {
+        "RedisConnection": "db-cache-comminity.oslrnd.com:6379,password=rndadmin2486,connectTimeout=800000,syncTimeout=700000,asyncTimeout=600000,abortConnect=False"
+      },
+      "MongoDBSettings": {
+        "ConnectionUri": "mongodb://admin:rndadmin2486@db-mongo-comminity.oslrnd.com/",
+        "DatabaseName": "private_community"
+      },
+      "ElasticSearch": {
+        "NodeUri": "https://ums-log.osl.team:9200",
+        "IndexName": "private-community-log",
+        "ApiKey": "X2thYWZYd0J3MFBLamI2b3UtNzI6WWZyejlfbXVRekNjYjFGWVUwd3lqUQ=="
+      },
+      "Logging": {
+        "LogLevel": {
+          "Default": "Error",
+          "Microsoft.AspNetCore": "Error"
+        }
+      },
+      "Serilog": {
+        "MinimumLevel": {
+          "Default": "Error",
+          "Override": {
+            "Microsoft": "Error",
+            "System": "Error"
+          }
+        },
+        "WriteTo": [
+          {
+            "Name": "File",
+            "Args": {
+              "path": "__logs/log-.txt",
+              "rollingInterval": "Day",
+              "rollOnFileSizeLimit": true,
+              "fileSizeLimitBytes": 5242880
+            }
+          }
+        ]
+      },
+      "BearerTokenOptions": {
+        "AccessTokenExpiration": "00:30:00",
+        "RefreshTokenExpiration": "7.00:00:00"
+      },
+      "Setup": {
+        "SeedData": true,
+        "AdminUser": {
+          "FirstName": "Admin",
+          "LastName": "User",
+          "Email": "admin@privatecommunity.com",
+          "Password": "Admin@1234#"
+        }
+      },
+      "SystemSettings": {
+        "BulkMemberAddLimit": 100,
+        "DefaultSettingsFilePath": "wwwroot/DefaultGroupSettings.json",
+        "ChatMessageSizeLimit": 100
+      },
+      "AllowedHosts": "*"
+    }
+

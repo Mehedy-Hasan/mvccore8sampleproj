@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: private-community-api-ingress
+  namespace: private-community
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Redirect HTTP to HTTPS
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+    kubernetes.io/ingress.class: nginx
+#    nginx.ingress.kubernetes.io/affinity: cookie
+
+spec:
+  tls:
+    - hosts:
+        - community-api.oslrnd.com
+      secretName: star-oslrnd-team
+  rules:
+    - host: community-api.oslrnd.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: private-community-api-svc
+                port:
+                  number: 80
+

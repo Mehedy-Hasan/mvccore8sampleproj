@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: DefaultMvcCore8-api
+  namespace: DefaultMvcCore8
+spec:
+  selector:
+    app: private-community-api # Match the labels with your Deployment or Pods
+  ports:
+    - protocol: TCP
+      port: 80        # Port on the service
+      targetPort: 8080  # Port on the pods
+  type: ClusterIP
