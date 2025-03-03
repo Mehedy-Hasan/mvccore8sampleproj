@@ -27,3 +27,17 @@ jobs:
       run: |
         docker tag mvccore8sampleproj:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/mvccore8sampleproj:${{ github.sha }}
         docker push ${{ secrets.DOCKER_USERNAME }}/mvccore8sampleproj:${{ github.sha }}
+    
+    - name: Update ArgoCD manifest with GitHub SHA
+      run: |
+        IMAGE_TAG=${{ github.sha }}
+        sed -i 's|image: .*|image: ${{ secrets.DOCKER_USERNAME }}/mvccore8sampleproj:$IMAGE_TAG|' ./k8s/deployment.yaml
+        cat ./k8s/deployment.yaml # Optional: Just to verify the changes
+
+    - name: Commit updated ArgoCD manifest
+      uses: EndBug/add-and-commit@v7
+      with:
+        author_name: "GitHub Actions"
+        author_email: "mehedyandhasan@gmail.com"
+        message: "Update ArgoCD manifest with new image tag"
+        add: "./k8s/deployment.yaml"
